@@ -21,6 +21,7 @@ class CreateItemsTable extends Migration
             $table->string('type');
             $table->string('dimension');
             $table->string('repository');
+            $table->string('image');
             $table->timestamps();
         });
     }
