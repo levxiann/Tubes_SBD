@@ -8,7 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class Medium extends Model
 {
     use HasFactory;
+
     protected $table = 'mediums';
+    
     public function category_items()
     {
         return $this->hasMany(Category_item::class);
