@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\MediumController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -12,7 +13,6 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-use App\Http\Controllers\MediumController;  
 
 Route::get('/', function () {
     return view('welcome');
@@ -22,4 +22,4 @@ Route::get('/tes', function () {
     return view('artsandculture.medium');
 });
 
-Route::resource('/medium', MediumController::class);
+Route::get('/medium', [MediumController::class, 'index']);
