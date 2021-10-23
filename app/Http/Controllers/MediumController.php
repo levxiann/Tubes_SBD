@@ -70,7 +70,33 @@ class MediumController extends Controller
      */
     public function show($id)
     {
-        //
+        $mediums = Medium::where('id', $id)->first();
+        $count = Category_article::where('medium_id',$id)->count();
+        $count_item = Category_item::where('medium_id',$id)->count();
+        $articles = Article::select('articles.*')
+        ->leftJoin('category_articles', 'articles.id', '=', 'category_articles.article_id')
+        ->where('category_articles.medium_id', $id)->paginate(5);
+        $items = Item::select('items.*')
+        ->leftJoin('category_items', 'items.id', '=', 'category_items.item_id')
+        ->where('category_items.medium_id', $id)->paginate(12);
+        $media = Medium::where('id','!=',$id)->paginate(5);
+        //$others = $media->paginate(5);
+        return view("artsandculture.medium_each", compact('mediums','articles','count','count_item','items','media'));
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function showAll($id)
+    {
+        $count = Category_article::where('medium_id',$id)->count();
+        $articles =  Article::select('articles.*')
+        ->leftJoin('category_articles', 'articles.id', '=', 'category_articles.article_id')
+        ->where('category_articles.medium_id', $id)->get();
+        return view("artsandculture.show_all_article", compact('articles','count'));
     }
 
     /**

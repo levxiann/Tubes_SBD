@@ -49,7 +49,7 @@
           <div class="position-relative">
               <ul class="list-medium-category d-flex justify-content-center">
                   @foreach($mediums as $medium)
-                  <a class="link-medium-category" href="#">
+                  <a class="link-medium-category" href="/medium/{{$medium->id}}">
                   <li class="medium-category" style="background:linear-gradient(to bottom, rgba(0,0,0,0) 70%, rgba(0,0,0,.6)), url({{asset('/images/mediums/'. $medium->image)}});">
                       <span class="text-photo text-photo-medium">{{$medium->name}}</span>
                       <span class="text-photo text-photo-sum">{{$medium->category_items->count() + $medium->category_articles->count()}} items</span>

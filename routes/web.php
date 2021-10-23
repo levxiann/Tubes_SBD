@@ -27,6 +27,10 @@ Route::get('/medium', [MediumController::class, 'index']);
 
 Route::post('/medium/add', [MediumController::class, 'store']);
 
+Route::get('/medium/{id}' , [MediumController::class, 'show']);
+
+Route::get('/medium/show_all_article/{id}' , [MediumController::class, 'showAll']);
+
 Route::delete('/medium/{id}', [MediumController::class, 'destroy']);
 
 Route::get('/item/{id}/{idmed}', [ItemController::class, 'detail']);
