@@ -10,6 +10,12 @@ class Medium extends Model
     use HasFactory;
 
     protected $table = 'mediums';
+
+    protected $fillable = [
+        'name',
+        'desc',
+        'image',
+    ];
     
     public function category_items()
     {
@@ -19,5 +25,10 @@ class Medium extends Model
     public function category_articles()
     {
         return $this->hasMany(Category_article::class);
+    }
+
+    public function favourites()
+    {
+        return $this->hasMany(Favourite::class);
     }
 }

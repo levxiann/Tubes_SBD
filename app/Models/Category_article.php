@@ -10,6 +10,11 @@ class Category_article extends Model
     use HasFactory;
 
     protected $table = 'category_articles';
+
+    protected $fillable = [
+        'article_id',
+        'medium_id',
+    ];
     
     public function article()
     {

@@ -19,8 +19,12 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name',
+        'sex',
+        'birthOfDate',
         'email',
         'password',
+        'image',
+        'level'
     ];
 
     /**
@@ -41,4 +45,9 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function favourites()
+    {
+        return $this->hasMany(Favourite::class);
+    }
 }

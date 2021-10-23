@@ -10,9 +10,22 @@ class Article extends Model
     use HasFactory;
 
     protected $table = 'articles';
+
+    protected $fillable = [
+        'title',
+        'content',
+        'credit',
+        'writer',
+        'image'
+    ];
     
     public function category_articles()
     {
         return $this->hasMany(Category_article::class);
+    }
+
+    public function favourites()
+    {
+        return $this->hasMany(Favourite::class);
     }
 }

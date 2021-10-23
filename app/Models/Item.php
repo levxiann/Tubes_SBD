@@ -10,9 +10,24 @@ class Item extends Model
     use HasFactory;
 
     protected $table = 'items';
+
+    protected $fillable = [
+        'title',
+        'date',
+        'author',
+        'type',
+        'dimension',
+        'repository',
+        'image'
+    ];
     
     public function category_items()
     {
         return $this->hasMany(Category_item::class);
+    }
+
+    public function favourites()
+    {
+        return $this->hasMany(Favourite::class);
     }
 }
