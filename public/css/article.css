@@ -6,6 +6,7 @@
 
 .background {
   width: 100%;
+  background-size: cover;
 }
 
 .nav-link {
