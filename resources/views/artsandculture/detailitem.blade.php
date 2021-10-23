@@ -41,6 +41,12 @@
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
 @enderror
+@error('image')
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            {{$message}}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+@enderror
 @error('itemmed')
     <div class="alert alert-danger alert-dismissible fade show" role="alert">
             {{$message}}
@@ -66,7 +72,7 @@
         <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editItemModal">
             Edit Item
         </button>
-        <form action="{{url('/item/'.$item->id)}}" method="POST" class="ms-2 text-photo" onsubmit="return confirm('Anda Yakin?')">
+        <form action="{{url('/item/'.$item->id.'/'.$idmed)}}" method="POST" class="ms-2 text-photo" onsubmit="return confirm('Anda Yakin?')">
             @csrf
             @method('delete')
                 <button type="submit" class="btn btn-danger">Delete</button>
@@ -113,11 +119,6 @@
                 <a class="link-medium-category" href="{{url('/item/'.$itm->item_id.'/'.$itm->medium_id)}}">
                 <li class="medium-category" style="background:linear-gradient(to bottom, rgba(0,0,0,0) 70%, rgba(0,0,0,.6)), url({{asset('/images/items/'. $itm->item->image)}});">
                     <span class="text-photo text-photo-medium">{{$itm->item->title}}</span>
-                    <form action="{{url('/item/'.$itm->item->id)}}" method="POST" class="mt-2 ms-2 text-photo" onsubmit="return confirm('Anda Yakin?')">
-                        @csrf
-                        @method('delete')
-                            <button type="submit" class="btn btn-danger btn-sm">Delete</button>
-                    </form>
                 </li>
                 </a>
                 @endforeach
@@ -221,7 +222,6 @@
         </div>
         <div class="modal-body">
             <form action="{{ url('/item/medium/'. $item->id) }}" method="POST">
-                @method('patch')
                 @csrf
                 <div class="form-group mb-3">
                     <label class="label" for="itemmed">Item Medium</label>

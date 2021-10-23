@@ -25,4 +25,9 @@ class Item extends Model
     {
         return $this->hasMany(Category_item::class);
     }
+
+    public function favourites()
+    {
+        return $this->hasMany(Favourite::class);
+    }
 }
