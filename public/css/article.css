@@ -1,0 +1,58 @@
+.navbar {
+  position: fixed;
+  width:100%;
+  transition: background-color 1s;
+}
+
+.background {
+  width: 100%;
+  background-size: cover;
+}
+
+.nav-link {
+  color: #202124 !important;
+  font-size: 0.875rem !important;
+  font-weight: 500;
+  margin-right: auto;
+  margin-top: 6px;
+}
+
+#title {
+  height: 100vh;
+  background-blend-mode: overlay; 
+  background-color: rgba(200, 200, 200, 0.486);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+  color: #fff;
+}
+
+#content {
+  margin-right: auto;
+  margin-left: auto;
+  text-align: justify;
+  height: 100vh;
+  background-color: #fff;
+  padding: 50px;
+}
+
+hr {
+  width: 8%;
+  border: none;
+  border-top: 2px solid;/* or bottom */
+  text-align: center;
+}
+
+.footer {
+  background-color: #fff;
+  height: 30vh;
+  color: #4f4f4f;
+  justify-content: center;
+  text-align: center;
+}
+
+p {
+  margin-bottom: 2em;
+}

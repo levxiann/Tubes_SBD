@@ -1,7 +1,8 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\Models\Article;
+use App\Models\Category_article;
 use Illuminate\Http\Request;
 use App\Models\Article;
 use App\Models\Category_article;
@@ -16,8 +17,9 @@ class ArticleController extends Controller
         return view("artsandculture.article", compact('articles'));
     }
 
-    public function detail()
+    public function detail($id)
     {
-        
+        $articles = Article::find($id);
+        return view("artsandculture.article", compact('articles'));
     }
 }

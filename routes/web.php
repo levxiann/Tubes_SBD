@@ -3,6 +3,7 @@
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\MediumController;
+use App\Http\Controllers\ArticleController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -45,5 +46,7 @@ Route::post('/item/medium/{id}', [ItemController::class, 'updatemedium']);
 Route::delete('/item/{id}/{idmed}', [ItemController::class, 'destroy']);
 
 Route::get('/article/{id}' , [ArticleController::class, 'index']);
+
+Route::get('/article/{id}', [ArticleController::class, 'detail']);
 
 Route::get('/search', [MediumController::class, 'search']);
