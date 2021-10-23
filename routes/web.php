@@ -23,3 +23,5 @@ Route::get('/tes', function () {
 });
 
 Route::get('/medium', [MediumController::class, 'index']);
+Route::get('/medium/{id}' , [MediumController::class, 'show']);
+Route::get('/medium/show_all_article/{id}' , [MediumController::class, 'showAll']);
