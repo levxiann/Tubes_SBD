@@ -10,9 +10,11 @@ use Illuminate\Support\Str;
 
 class ItemController extends Controller
 {
-    public function index()
+    public function index($id)
     {
+        $items = Medium::findOrFail($id)->category_items()->get();
 
+        return view('artsandculture.item', compact('items'));
     }
 
     public function detail($id, $idmed)
@@ -25,6 +27,43 @@ class ItemController extends Controller
         $allmed = Medium::all(); //daftar semua medium
 
         return view('artsandculture.detailitem', compact('item', 'items', 'mediums', 'idmed', 'allmed'));
+    }
+
+    public function store(Request $request, $id)
+    {
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'author' => 'required|string|max:255',
+            'date' => 'required|string|min:4',
+            'type' => 'required|string|max:255',
+            'dimension' => 'required|string|max:255',
+            'repository' => 'required|string|max:255',
+            'image' => 'required|image|mimes:jpg,png,jpeg|max:10240'
+        ]);
+
+        $newname = Str::random(20);
+        $newname .=".";
+        $newname .= $request->file('image')->extension();
+        $request->file('image')->move(public_path('images/items'), $newname);
+
+        Item::create([
+            'title' => $request->title,
+            'author' => $request->author,
+            'date' => $request->date,
+            'type' => $request->type,
+            'dimension' => $request->dimension,
+            'repository' => $request->repository,
+            'image' => $newname
+        ]);
+
+        $idItem = Item::orderBy('id', 'DESC')->first();
+
+        Category_item::create([
+            'item_id' => $idItem->id,
+            'medium_id' => $id
+        ]);
+
+        return redirect('/medium/'. $id)->with('status','Item berhasil ditambah');
     }
 
     public function update(Request $request, $id, $idmed)
@@ -85,10 +124,10 @@ class ItemController extends Controller
         return redirect('/item/'. $id . '/'. $request->itemmed[0])->with('status','Item Medium berhasil diubah');
     }
 
-    public function destroy($id)
+    public function destroy($id, $idmed)
     {
         Item::destroy($id);
 
-        return redirect('/item/1/1')->with('status','Item berhasil dihapus');
+        return redirect('/medium/'.$idmed)->with('status','Item berhasil dihapus');
     }
 }

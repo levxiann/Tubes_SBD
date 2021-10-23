@@ -1,5 +1,18 @@
 <nav class="navbar navbar-expand-sm navbar-light">
     <div class="container-fluid">
+        <nav class="navbar navbar-expand-sm navbar-light" style="border=1;">
+            <div class="container-fluid">
+                <button class="navbar-brand arrow-back-icon back-page"><i class="fa fa-arrow-left"></i></button>
+                <span class="navbar-brand">Kembali</span>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                    <div class="navbar-nav mr-auto">
+                    </div>
+                </div>
+            </div>
+        </nav>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
         </button>

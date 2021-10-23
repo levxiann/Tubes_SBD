@@ -70,33 +70,13 @@ class MediumController extends Controller
      */
     public function show($id)
     {
-        $mediums = Medium::where('id', $id)->first();
-        $count = Category_article::where('medium_id',$id)->count();
-        $count_item = Category_item::where('medium_id',$id)->count();
-        $articles = Article::select('articles.*')
-        ->leftJoin('category_articles', 'articles.id', '=', 'category_articles.article_id')
-        ->where('category_articles.medium_id', $id)->paginate(5);
-        $items = Item::select('items.*')
-        ->leftJoin('category_items', 'items.id', '=', 'category_items.item_id')
-        ->where('category_items.medium_id', $id)->paginate(12);
+        $mediums = Medium::findOrFail($id);
+        $count_article = Medium::find($id)->category_articles()->count();
+        $count_item = Medium::find($id)->category_items()->count();
+        $articles = Medium::find($id)->category_articles()->orderBy('article_id', 'DESC')->paginate(5);
+        $items = Medium::find($id)->category_items()->orderBy('item_id', 'DESC')->paginate(12);
         $media = Medium::where('id','!=',$id)->paginate(5);
-        //$others = $media->paginate(5);
-        return view("artsandculture.medium_each", compact('mediums','articles','count','count_item','items','media'));
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function showAll($id)
-    {
-        $count = Category_article::where('medium_id',$id)->count();
-        $articles =  Article::select('articles.*')
-        ->leftJoin('category_articles', 'articles.id', '=', 'category_articles.article_id')
-        ->where('category_articles.medium_id', $id)->get();
-        return view("artsandculture.show_all_article", compact('articles','count'));
+        return view("artsandculture.medium_each", compact('mediums','articles','items','media', 'count_item', 'count_article'));
     }
 
     /**
@@ -119,7 +99,33 @@ class MediumController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'desc' => 'required|string',
+            'image' => 'image|mimes:jpg,png,jpeg|max:10240'
+        ]);
+
+        Medium::where('id', $id)
+        ->update([
+            'name' => $request->name,
+            'desc' => $request->desc
+        ]);
+
+        if($request->has('image'))
+        {
+            $newname = Str::random(20);
+            $newname .=".";
+            $newname .= $request->file('image')->extension();
+
+            $request->file('image')->move(public_path('images/mediums'), $newname);
+
+            Medium::where('id', $id)
+            ->update([
+                'image' => $newname
+                ]);
+        }
+
+        return redirect('/medium/'. $id)->with('status','Medium berhasil diubah');
     }
 
     /**
@@ -131,6 +137,24 @@ class MediumController extends Controller
     public function destroy($id)
     {
         Medium::destroy($id);
+        
+        $items = Item::all();
+
+        foreach ($items as $item) {
+            if($item->category_items()->count() == 0)
+            {
+                Item::destroy($item->id);
+            }
+        }
+
+        $articles = Article::all();
+
+        foreach ($articles as $article) {
+            if($article->category_articles()->count() == 0)
+            {
+                Article::destroy($article->id);
+            }
+        }
 
         return redirect('/medium')->with('status','Medium berhasil dihapus');
     }

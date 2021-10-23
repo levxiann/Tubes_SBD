@@ -23,4 +23,9 @@ class Article extends Model
     {
         return $this->hasMany(Category_article::class);
     }
+
+    public function favourites()
+    {
+        return $this->hasMany(Favourite::class);
+    }
 }
