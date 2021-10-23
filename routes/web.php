@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ItemController;
 use App\Http\Controllers\MediumController;
 use Illuminate\Support\Facades\Route;
 
@@ -23,3 +24,17 @@ Route::get('/tes', function () {
 });
 
 Route::get('/medium', [MediumController::class, 'index']);
+
+Route::post('/medium/add', [MediumController::class, 'store']);
+
+Route::delete('/medium/{id}', [MediumController::class, 'destroy']);
+
+Route::get('/item/{id}/{idmed}', [ItemController::class, 'detail']);
+
+Route::patch('/item/{id}/{idmed}', [ItemController::class, 'update']);
+
+Route::post('/item/medium/{id}', [ItemController::class, 'updatemedium']);
+
+Route::delete('/item/{id}', [ItemController::class, 'destroy']);
+
+Route::get('/search', [MediumController::class, 'search']);

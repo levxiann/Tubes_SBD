@@ -10,6 +10,16 @@ class Item extends Model
     use HasFactory;
 
     protected $table = 'items';
+
+    protected $fillable = [
+        'title',
+        'date',
+        'author',
+        'type',
+        'dimension',
+        'repository',
+        'image'
+    ];
     
     public function category_items()
     {

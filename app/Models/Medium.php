@@ -10,6 +10,12 @@ class Medium extends Model
     use HasFactory;
 
     protected $table = 'mediums';
+
+    protected $fillable = [
+        'name',
+        'desc',
+        'image',
+    ];
     
     public function category_items()
     {
