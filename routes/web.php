@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\MediumController;
+use App\Http\Controllers\ArticleController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -23,3 +24,5 @@ Route::get('/tes', function () {
 });
 
 Route::get('/medium', [MediumController::class, 'index']);
+
+Route::get('/article/{id}', [ArticleController::class, 'detail']);
