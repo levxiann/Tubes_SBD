@@ -93,22 +93,44 @@
                         @endif
                     </div>
                 </div><hr>
-                <div class="d-flex header-title ms-3">
-                    <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editMediumModal">
-                        Edit Medium
-                    </button>
-                    <form action="{{url('/medium/'.$mediums->id)}}" method="POST" class="ms-2 text-photo" onsubmit="return confirm('Anda Yakin?')">
-                        @csrf
-                        @method('delete')
-                            <button type="submit" class="btn btn-danger btn-sm">Delete</button>
-                    </form><hr>
-                </div>
+                @if (Auth::check())
+                    @if (Auth::user()->level == "1")
+                        <div class="d-flex header-title ms-3">
+                            <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editMediumModal">
+                                Edit Medium
+                            </button>
+                            <form action="{{url('/medium/'.$mediums->id)}}" method="POST" class="ms-2 text-photo" onsubmit="return confirm('Anda Yakin?')">
+                                @csrf
+                                @method('delete')
+                                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                            </form>
+                    @endif
+                            @if ($liked == 0)
+                                <form action="{{url('/account/favourite/medium/'.$mediums->id)}}" method="POST" class="ms-2 text-photo">
+                                    @csrf
+                                        <button type="submit" class="btn btn-primary btn-sm"><span class="fa fa-heart" style="background: transparent"></span> Tambah Favorit</button>
+                                </form>
+                            @else
+                                <form action="{{url('/account/favourite/medium/delete/'.$mediums->id)}}" method="POST" class="ms-2 text-photo">
+                                    @csrf
+                                    @method('delete')
+                                        <button type="submit" class="btn btn-secondary btn-sm"><span class="fa fa-heart" style="background: transparent"></span> Hapus Favorit</button>
+                                </form>
+                            @endif
+                        </div><hr>
+                @endif
                 <div class="row"><br><br></div>
                 <div class="row justify-content-start">
                     <div class="col-lg-2 mark">
                         <span>{{$count_article}} artikel</span>
                     </div>
-                    <div class="col-lg-2"></div>
+                    <div class="col-lg-2">
+                        @if (Auth::check())
+                            @if (Auth::user()->level == "1")
+                                <a href="{{url('/articles/add/'.$mediums->id)}}" class="btn btn-success">Tambah Artikel</a>
+                            @endif
+                        @endif
+                    </div>
                     <div class="col-lg-2"></div>
                     <div class="col-lg-2"></div>
                     <div class="col-lg-2"></div>
@@ -121,9 +143,9 @@
                 <div class="row justify-content-start">
                     @foreach($articles as $article)
                     <div class="col">
-                        <a href="#" style="text-decoration:none">
+                        <a href="{{url('/article/'.$article->article_id.'/'.$article->medium_id)}}" style="text-decoration:none">
                             <div class="card border-0" style="width: 10rem; border-radius: 5px;">
-                                <img src="{{asset('/images/articles/'. $article->article->image)}}" class="card-img-top" style="width: 13rem; height: 12rem; object-fit: cover; border-radius: 5px;" alt="...">
+                                <img src="{{asset('/images/articles/'. $article->article->image)}}" class="card-img-top" style="width: 13rem; height: 12rem; object-fit: cover; border-radius: 5px;" alt="{{$article->article->title}}">
                                 <div class="card-body">
                                     <span class="cerita">CERITA</span><br>
                                     <span class="card-title" style="color:black; font-weight:500;">{{$article->article->title}}</span>
@@ -139,9 +161,13 @@
                         <span>Temukan media ini</span>
                     </div>
                     <div class="col-lg-2">
-                        <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#TambahItemModal">
-                            Tambah Item
-                        </button>
+                        @if (Auth::check())
+                            @if (Auth::user()->level == "1")
+                                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#TambahItemModal">
+                                    Tambah Item
+                                </button>
+                            @endif
+                        @endif
                     </div>
                     <div class="col-lg-1"></div>
                     <div class="col-lg-2"></div>
@@ -251,8 +277,8 @@
             <form action="{{ url('/item/add/'.$mediums->id) }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="form-group mb-3">
-                    <label class="label" for="title">Judul Item</label>
-                    <input id="title" name="title" type="text" class="form-control @error('title') is-invalid @enderror" placeholder="Item title" value="{{ old('title') }}" autocomplete="name" autofocus>
+                    <label class="label" for="titleItem">Judul Item</label>
+                    <input id="titleItem" name="title" type="text" class="form-control @error('title') is-invalid @enderror" placeholder="Item title" value="{{ old('title') }}" autocomplete="name" autofocus>
                     @error('title')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>

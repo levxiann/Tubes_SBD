@@ -68,19 +68,35 @@
 <div class="row mt-2">
     <h6 class="display-6 ms-3">{{$item->title}}</h6>
     <p class="text-muted ms-3">{{$item->author}} {{$item->date}}</p>
-    <div class="d-flex header-title ms-3">
-        <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editItemModal">
-            Edit Item
-        </button>
-        <form action="{{url('/item/'.$item->id.'/'.$idmed)}}" method="POST" class="ms-2 text-photo" onsubmit="return confirm('Anda Yakin?')">
-            @csrf
-            @method('delete')
-                <button type="submit" class="btn btn-danger">Delete</button>
-        </form>
-        <button type="button" class="btn btn-secondary ms-3" data-bs-toggle="modal" data-bs-target="#editItemMediumModal">
-            Edit Medium
-        </button>
-    </div>
+    @if (Auth::check())
+        @if (Auth::user()->level == "1")
+            <div class="d-flex header-title ms-3">
+                <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editItemModal">
+                    Edit Item
+                </button>
+                <form action="{{url('/item/'.$item->id.'/'.$idmed)}}" method="POST" class="ms-2 text-photo" onsubmit="return confirm('Anda Yakin?')">
+                    @csrf
+                    @method('delete')
+                        <button type="submit" class="btn btn-danger">Delete</button>
+                </form>
+                <button type="button" class="btn btn-secondary ms-3" data-bs-toggle="modal" data-bs-target="#editItemMediumModal">
+                    Edit Medium
+                </button>
+        @endif
+                @if ($liked == 0)
+                    <form action="{{url('/account/favourite/item/'.$item->id . '/'. $idmed)}}" method="POST" class="ms-2 text-photo">
+                        @csrf
+                        <button type="submit" class="btn btn-primary btn-sm"><span class="fa fa-heart" style="background: transparent"></span> Tambah Favorit</button>
+                    </form>
+                @else
+                    <form action="{{url('/account/favourite/item/delete/'.$item->id . '/' . $idmed)}}" method="POST" class="ms-2 text-photo">
+                        @csrf
+                        @method('delete')
+                        <button type="submit" class="btn btn-secondary btn-sm"><span class="fa fa-heart" style="background: transparent"></span> Hapus Favorit</button>
+                    </form>
+                @endif
+            </div>
+    @endif
 </div><hr>
 <div class="row mt-3 ms-2">
     <h6 class="display-6">Detail</h6>
@@ -140,8 +156,8 @@
                 @method('patch')
                 @csrf
                 <div class="form-group mb-3">
-                    <label class="label" for="title">Judul Item</label>
-                    <input id="title" name="title" type="text" class="form-control @error('title') is-invalid @enderror" placeholder="Item title" value="{{ $item->title }}" autocomplete="name" autofocus>
+                    <label class="label" for="titleItem">Judul Item</label>
+                    <input id="titleItem" name="title" type="text" class="form-control @error('title') is-invalid @enderror" placeholder="Item title" value="{{ $item->title }}" autocomplete="name" autofocus>
                     @error('title')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
@@ -264,4 +280,10 @@
     </div>
     </div>
 </div>
+
+<select name="tes" id="tes" multiple>
+    <option value="1" selected>1</option>
+    <option value="2">2</option>
+    <option value="3" selected>3</option>
+</select>
 @endsection

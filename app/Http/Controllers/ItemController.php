@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\Item;
 use App\Models\Medium;
 use App\Models\Category_item;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 
 class ItemController extends Controller
@@ -25,8 +27,17 @@ class ItemController extends Controller
         $count = Medium::find($idmed)->category_items()->count(); //jumlah item pada medium yang sama
         $items = Medium::find($idmed)->category_items()->where('item_id', '!=', $id)->offset(rand(0, $count-6))->limit(6)->get(); //item lain pada medium yang sama
         $allmed = Medium::all(); //daftar semua medium
+        
+        if(Auth::check())
+        {
+            $liked = User::find(Auth::user()->id)->favourites()->where('fav_id',2)->where('item_id', $id)->count();
+        }
+        else
+        {
+            $liked = -1;
+        }
 
-        return view('artsandculture.detailitem', compact('item', 'items', 'mediums', 'idmed', 'allmed'));
+        return view('artsandculture.detailitem', compact('item', 'items', 'mediums', 'idmed', 'allmed', 'liked'));
     }
 
     public function store(Request $request, $id)
