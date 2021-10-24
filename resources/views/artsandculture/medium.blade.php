@@ -33,9 +33,13 @@
             </div>
         @endif
           <div class="d-flex header-title">
-            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#tambahMediaModal">
-                Tambah Media
-            </button>
+            @if (Auth::check())
+                @if (Auth::user()->level == "1")
+                    <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#tambahMediaModal">
+                        Tambah Media
+                    </button>
+                @endif
+            @endif
           </div>
           <div class="d-flex justify-content-center header-title">
               <h1>Media</h1>

@@ -8,6 +8,8 @@ use App\Models\Category_item;
 use Illuminate\Http\Request;
 use App\Models\Medium;
 use App\Models\Item;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 
 class MediumController extends Controller
@@ -76,7 +78,15 @@ class MediumController extends Controller
         $articles = Medium::find($id)->category_articles()->orderBy('article_id', 'DESC')->paginate(5);
         $items = Medium::find($id)->category_items()->orderBy('item_id', 'DESC')->paginate(12);
         $media = Medium::where('id','!=',$id)->paginate(5);
-        return view("artsandculture.medium_each", compact('mediums','articles','items','media', 'count_item', 'count_article'));
+        if(Auth::check())
+        {
+            $liked = User::find(Auth::user()->id)->favourites()->where('fav_id',1)->where('medium_id', $id)->count();
+        }
+        else
+        {
+            $liked = -1;
+        }
+        return view("artsandculture.medium_each", compact('mediums','articles','items','media', 'count_item', 'count_article', 'liked'));
     }
 
     /**
@@ -163,12 +173,12 @@ class MediumController extends Controller
     {
         if($request->keyword == "")
         {
-            $mediums = Medium::all();
+            $mediums = Medium::orderBy('id', 'DESC')->get();
             return view("artsandculture.medium", compact('mediums'));
         }
         else
         {
-            $mediums = Medium::where('name', 'like', "%".$request->keyword."%")->get();
+            $mediums = Medium::where('name', 'like', "%".$request->keyword."%")->orderBy('id', 'DESC')->get();
 
             $keyword = $request->keyword;
 
