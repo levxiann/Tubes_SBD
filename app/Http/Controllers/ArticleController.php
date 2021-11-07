@@ -48,11 +48,21 @@ class ArticleController extends Controller
         {
             return redirect('/medium');
         }
+        
         return view("artsandculture.addarticle", compact('idmed'));
     }
 
     public function store(Request $request, $id)
     {
+        if(!Auth::check())
+        {
+            return redirect('/medium');
+        }
+        elseif(Auth::user()->level == 2)
+        {
+            return redirect('/medium');
+        }
+
         $request->validate([
             'title' => 'required|string|max:255',
             'content' => 'required|string',
@@ -102,6 +112,15 @@ class ArticleController extends Controller
 
     public function update(Request $request, $id, $idmed)
     {
+        if(!Auth::check())
+        {
+            return redirect('/medium');
+        }
+        elseif(Auth::user()->level == 2)
+        {
+            return redirect('/medium');
+        }
+
         $request->validate([
             'title' => 'required|string|max:255',
             'content' => 'required|string',
@@ -137,6 +156,15 @@ class ArticleController extends Controller
 
     public function updatemedium(Request $request, $id)
     {
+        if(!Auth::check())
+        {
+            return redirect('/medium');
+        }
+        elseif(Auth::user()->level == 2)
+        {
+            return redirect('/medium');
+        }
+
         $request->validate([
             'articlemed' => 'required'
         ]);
@@ -156,6 +184,15 @@ class ArticleController extends Controller
 
     public function destroy($id, $idmed)
     {
+        if(!Auth::check())
+        {
+            return redirect('/medium');
+        }
+        elseif(Auth::user()->level == 2)
+        {
+            return redirect('/medium');
+        }
+
         Article::destroy($id);
 
         return redirect('/medium/'.$idmed)->with('status','Artikel berhasil dihapus');

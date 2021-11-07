@@ -22,6 +22,11 @@ class AccountController extends Controller
 
     public function update(Request $request)
     {
+        if(!Auth::check())
+        {
+            return redirect('/medium');
+        }
+
         $request->validate([
             'name' => 'required|string|max:255',
             'sex' => 'required',
@@ -57,6 +62,11 @@ class AccountController extends Controller
 
     public function favmedium(Request $request, $id)
     {
+        if(!Auth::check())
+        {
+            return redirect('/medium');
+        }
+
         if(User::find(Auth::user()->id)->favourites()->where('fav_id',1)->where('medium_id', $id)->count() > 0)
         {
             return redirect('/medium/'.$id);
@@ -73,6 +83,11 @@ class AccountController extends Controller
 
     public function deletefavmedium($id)
     {
+        if(!Auth::check())
+        {
+            return redirect('/medium');
+        }
+
         User::findOrFail(Auth::user()->id)->favourites()->where('fav_id',1)->where('medium_id', $id)->delete();
 
         return redirect('/medium/'.$id);
@@ -80,6 +95,11 @@ class AccountController extends Controller
 
     public function favitem(Request $request, $id, $idmed)
     {
+        if(!Auth::check())
+        {
+            return redirect('/medium');
+        }
+
         if(User::find(Auth::user()->id)->favourites()->where('fav_id',2)->where('item_id', $id)->count() > 0)
         {
             return redirect('/medium/'.$id);
@@ -96,6 +116,11 @@ class AccountController extends Controller
 
     public function deletefavitem($id, $idmed)
     {
+        if(!Auth::check())
+        {
+            return redirect('/medium');
+        }
+
         User::findOrFail(Auth::user()->id)->favourites()->where('fav_id',2)->where('item_id', $id)->delete();
 
         return redirect('/item/'.$id.'/'.$idmed);
@@ -103,6 +128,11 @@ class AccountController extends Controller
 
     public function favarticle(Request $request, $id, $idmed)
     {
+        if(!Auth::check())
+        {
+            return redirect('/medium');
+        }
+
         if(User::find(Auth::user()->id)->favourites()->where('fav_id',3)->where('article_id', $id)->count() > 0)
         {
             return redirect('/medium/'.$id);
@@ -119,6 +149,11 @@ class AccountController extends Controller
 
     public function deletefavarticle($id, $idmed)
     {
+        if(!Auth::check())
+        {
+            return redirect('/medium');
+        }
+
         User::findOrFail(Auth::user()->id)->favourites()->where('fav_id',3)->where('article_id', $id)->delete();
 
         return redirect('/article/'.$id.'/'.$idmed);
@@ -156,6 +191,15 @@ class AccountController extends Controller
 
     public function search(Request $request)
     {
+        if(!Auth::check())
+        {
+            return redirect('/medium');
+        }
+        elseif(Auth::user()->level == 2)
+        {
+            return redirect('/medium');
+        }
+
         $users = User::where('name', 'like', "%".$request->keyword."%")->orWhere('email', 'like', "%".$request->keyword."%")->paginate(9);
 
         $users->appends(['keyword' => $request->keyword]);
@@ -165,6 +209,15 @@ class AccountController extends Controller
 
     public function destroy($id)
     {
+        if(!Auth::check())
+        {
+            return redirect('/medium');
+        }
+        elseif(Auth::user()->level == 2)
+        {
+            return redirect('/medium');
+        }
+        
         User::destroy($id);
 
         return redirect('/accounts')->with('status', 'Akun berhasil dihapus');

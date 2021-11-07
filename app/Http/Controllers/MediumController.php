@@ -43,6 +43,15 @@ class MediumController extends Controller
      */
     public function store(Request $request)
     {
+        if(!Auth::check())
+        {
+            return redirect('/medium');
+        }
+        elseif(Auth::user()->level == 2)
+        {
+            return redirect('/medium');
+        }
+
         $request->validate([
             'name' => 'required|string|max:255',
             'desc' => 'required|string',
@@ -109,6 +118,15 @@ class MediumController extends Controller
      */
     public function update(Request $request, $id)
     {
+        if(!Auth::check())
+        {
+            return redirect('/medium');
+        }
+        elseif(Auth::user()->level == 2)
+        {
+            return redirect('/medium');
+        }
+
         $request->validate([
             'name' => 'required|string|max:255',
             'desc' => 'required|string',
@@ -146,6 +164,15 @@ class MediumController extends Controller
      */
     public function destroy($id)
     {
+        if(!Auth::check())
+        {
+            return redirect('/medium');
+        }
+        elseif(Auth::user()->level == 2)
+        {
+            return redirect('/medium');
+        }
+        
         Medium::destroy($id);
         
         $items = Item::all();
