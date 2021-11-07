@@ -42,6 +42,15 @@ class ItemController extends Controller
 
     public function store(Request $request, $id)
     {
+        if(!Auth::check())
+        {
+            return redirect('/medium');
+        }
+        elseif(Auth::user()->level == 2)
+        {
+            return redirect('/medium');
+        }
+
         $request->validate([
             'title' => 'required|string|max:255',
             'author' => 'required|string|max:255',
@@ -79,6 +88,15 @@ class ItemController extends Controller
 
     public function update(Request $request, $id, $idmed)
     {
+        if(!Auth::check())
+        {
+            return redirect('/medium');
+        }
+        elseif(Auth::user()->level == 2)
+        {
+            return redirect('/medium');
+        }
+
         $request->validate([
             'title' => 'required|string|max:255',
             'author' => 'required|string|max:255',
@@ -118,6 +136,15 @@ class ItemController extends Controller
 
     public function updatemedium(Request $request, $id)
     {
+        if(!Auth::check())
+        {
+            return redirect('/medium');
+        }
+        elseif(Auth::user()->level == 2)
+        {
+            return redirect('/medium');
+        }
+
         $request->validate([
             'itemmed' => 'required'
         ]);
@@ -137,6 +164,15 @@ class ItemController extends Controller
 
     public function destroy($id, $idmed)
     {
+        if(!Auth::check())
+        {
+            return redirect('/medium');
+        }
+        elseif(Auth::user()->level == 2)
+        {
+            return redirect('/medium');
+        }
+        
         Item::destroy($id);
 
         return redirect('/medium/'.$idmed)->with('status','Item berhasil dihapus');
