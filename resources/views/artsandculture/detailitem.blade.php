@@ -280,10 +280,4 @@
     </div>
     </div>
 </div>
-
-<select name="tes" id="tes" multiple>
-    <option value="1" selected>1</option>
-    <option value="2">2</option>
-    <option value="3" selected>3</option>
-</select>
 @endsection
