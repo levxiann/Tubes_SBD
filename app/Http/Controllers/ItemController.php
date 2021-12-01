@@ -25,7 +25,7 @@ class ItemController extends Controller
         $item = Item::findOrFail($id); //cari detail item
         $mediums = Category_item::where('item_id', $id)->get(); //medium yang ada pada item tersebut
         $count = Medium::find($idmed)->category_items()->count(); //jumlah item pada medium yang sama
-        $items = Medium::find($idmed)->category_items()->where('item_id', '!=', $id)->offset(rand(0, $count-6))->limit(6)->get(); //item lain pada medium yang sama
+        $items = Medium::find($idmed)->category_items()->where('item_id', '<>', $id)->offset(rand(0, $count-6))->limit(6)->get(); //item lain pada medium yang sama
         $allmed = Medium::all(); //daftar semua medium
         
         if(Auth::check())
