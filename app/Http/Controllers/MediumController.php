@@ -86,7 +86,7 @@ class MediumController extends Controller
         $count_item = Medium::find($id)->category_items()->count();
         $articles = Medium::find($id)->category_articles()->orderBy('article_id', 'DESC')->paginate(5);
         $items = Medium::find($id)->category_items()->orderBy('item_id', 'DESC')->paginate(12);
-        $media = Medium::where('id','!=',$id)->paginate(5);
+        $media = Medium::where('id','<>',$id)->paginate(5);
         if(Auth::check())
         {
             $liked = User::find(Auth::user()->id)->favourites()->where('fav_id',1)->where('medium_id', $id)->count();
